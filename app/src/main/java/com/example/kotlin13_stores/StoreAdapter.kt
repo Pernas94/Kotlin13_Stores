@@ -4,17 +4,21 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlin13_stores.databinding.ItemStoreBinding
 
-class StoreAdapter(private var stores:MutableList<StoreEntity>, private var listener:OnClickListener):
-    RecyclerView.Adapter<StoreAdapter.ViewHolder>(){
+class StoreAdapter(
+    private var stores: MutableList<StoreEntity>,
+    private var listener: OnClickListener
+) :
+    RecyclerView.Adapter<StoreAdapter.ViewHolder>() {
 
     private lateinit var mContext: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         mContext = parent.context
-        val view = LayoutInflater.from(mContext).inflate(R.layout.item_store, parent,false)
+        val view = LayoutInflater.from(mContext).inflate(R.layout.item_store, parent, false)
         return ViewHolder(view)
     }
 
@@ -24,26 +28,71 @@ class StoreAdapter(private var stores:MutableList<StoreEntity>, private var list
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val store = stores.get(position)
-        with(holder){
+        with(holder) {
             setListener(store)
             binding.tvName.text = store.name
+            binding.cbFavourite.isChecked = store.isFavourite
 
         }
 
     }
 
     fun add(storeEntity: StoreEntity) {
-        stores.add(storeEntity)
+        if(storeEntity.name.isBlank()){
+            Toast.makeText(mContext, "La tienda debe tener un nombre", Toast.LENGTH_SHORT).show()
+        }else{
+            stores.add(storeEntity)
+            notifyDataSetChanged()
+        }
+
+    }
+
+    fun setStores(stores: MutableList<StoreEntity>) {
+
+        this.stores = stores
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+    fun update(storeEntity: StoreEntity) {
+        val position = stores.indexOf(storeEntity)
+        if (position != -1) { //-1 implica que no se encontró
+            stores.set(position, storeEntity)
+            notifyItemChanged(position)
+        }
+    }
+
+
+    fun delete(storeEntity: StoreEntity) {
+        val position = stores.indexOf(storeEntity)
+        if (position != -1) { //-1 implica que no se encontró
+            stores.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
+
+
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val binding = ItemStoreBinding.bind(view)
 
-        fun setListener(storeEntity:StoreEntity){
-            binding.root.setOnClickListener {
-                listener.onClick(storeEntity)
+        fun setListener(storeEntity: StoreEntity) {
+
+            with(binding.root) {
+                setOnClickListener {
+                    listener.onClick(storeEntity)
+                }
+
+                setOnLongClickListener {
+                    listener.onDeleteStore(storeEntity)
+                    true
+                }
+
             }
+
+            binding.cbFavourite.setOnClickListener {
+                listener.onFavouriteStore(storeEntity)
+            }
+
+
         }
     }
 }
