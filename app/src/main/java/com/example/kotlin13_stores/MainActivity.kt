@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kotlin13_stores.databinding.ActivityMainBinding
 import java.util.concurrent.LinkedBlockingQueue
 
- class MainActivity : AppCompatActivity(), OnClickListener {
+ class MainActivity : AppCompatActivity(), OnClickListener, MainAux {
 
     private lateinit var mBinding:ActivityMainBinding
      private lateinit var mAdapter: StoreAdapter
@@ -17,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        mBinding.btnSave.setOnClickListener {
+        /*mBinding.btnSave.setOnClickListener {
             var storeEntity:StoreEntity = StoreEntity(name = mBinding.etName.text.toString().trim())
 
             Thread{
@@ -26,12 +26,29 @@ import java.util.concurrent.LinkedBlockingQueue
 
             mAdapter.add(storeEntity)
             mBinding.etName.text.clear()
+        }*/
+
+        mBinding.fab.setOnClickListener {
+            launchEditFragment()
         }
         initRecycler()
 
 
     }
 
+     private fun launchEditFragment() {
+         val fragment = EditStoreFragment()
+         val fragmentManager = supportFragmentManager
+         val fragmentTransaction = fragmentManager.beginTransaction()
+
+         /*Al añadir un fragment, le tenemos que especificar 1º el view objetivo, 2º el fragment a inflar*/
+         fragmentTransaction.add(R.id.containerMain, fragment)
+         fragmentTransaction.addToBackStack(null)
+         fragmentTransaction.commit() //Para que se apliquen los cambios
+
+         hideFab(false)
+
+     }
 
 
      private fun getStores(){
@@ -88,5 +105,22 @@ import java.util.concurrent.LinkedBlockingQueue
          }.start()
 
          mAdapter.delete(queue.take())
+     }
+
+
+     /**
+      * MAIN AUX
+      * @param isVisible Boolean
+      */
+     override fun hideFab(isVisible: Boolean) {
+         if(isVisible) mBinding.fab.show() else mBinding.fab.hide()
+     }
+
+     override fun addStore(storeEntity: StoreEntity) {
+         mAdapter.add(storeEntity)
+     }
+
+     override fun updateStore(storeEntity: StoreEntity) {
+         TODO("Not yet implemented")
      }
  }

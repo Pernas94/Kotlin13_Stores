@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Kotlin13_Stores</string>
     <string name="decription_image_photo">Imagen de la tienda\n</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_name">Nombre de la tienda</string>
+    <string name="helper_required">Requerido\n</string>
+    <string name="phone_number">Numero de telefono</string>
+    <string name="hint_website">Web de la tienda</string>
+    <string name="photo_url">Url de la imagen</string>
+    <string name="edit_store_title_add">Crear tienda</string>
+    <string name="menu_save">Save</string>
+    <string name="edit_store_message_success">Tienda agregada correctamente</string>
 </resources>

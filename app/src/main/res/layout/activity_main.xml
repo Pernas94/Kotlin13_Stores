@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
         android:layout_width="wrap_content"
@@ -27,6 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/btnSave"
         app:layout_constraintBottom_toBottomOf="@id/btnSave"
         />
+        -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
@@ -34,11 +36,12 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnSave"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_store"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
