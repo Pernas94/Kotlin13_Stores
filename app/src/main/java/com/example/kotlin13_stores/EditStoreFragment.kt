@@ -16,6 +16,7 @@ import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.kotlin13_stores.databinding.FragmentEditStoreBinding
+import com.google.android.material.textfield.TextInputLayout
 import java.util.concurrent.LinkedBlockingQueue
 
 class EditStoreFragment : Fragment() {
@@ -107,7 +108,7 @@ class EditStoreFragment : Fragment() {
 
 
             R.id.action_save -> {
-                if(mStoreEntity!=null){
+                if(mStoreEntity!=null && validateFields(mBinding.tilPhotoUrl, mBinding.tilPhone, mBinding.tilName)){
                     //Creo un store a través de los campos del UI
                     with(mStoreEntity!!){
                         name = mBinding.etName.text.toString().trim()
@@ -152,6 +153,21 @@ class EditStoreFragment : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private fun validateFields(vararg til: TextInputLayout): Boolean {
+        var isValid = true
+        for (editText in til){
+            if(editText.editText?.text.toString().trim().isEmpty()){
+                editText.error = getString(R.string.helper_required)
+                isValid = false
+            }
+        }
+
+
+        if(!isValid) Toast.makeText(mActivity, getString(R.string.edit_store_valid), Toast.LENGTH_SHORT).show()
+        return isValid
+    }
+
 
     /**
      * Función para esconder el teclado

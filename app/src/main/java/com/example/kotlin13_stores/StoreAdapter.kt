@@ -43,17 +43,10 @@ class StoreAdapter(
 
     fun add(storeEntity: StoreEntity) {
 
-        if(storeEntity.name.isBlank()){
-            Toast.makeText(mContext, "La tienda debe tener un nombre", Toast.LENGTH_SHORT).show()
-        }else{
             if(!stores.contains(storeEntity)){
                 stores.add(storeEntity)
                 notifyItemInserted(stores.size-1)
-            }else{
-                
             }
-
-        }
 
     }
 
