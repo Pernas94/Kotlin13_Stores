@@ -17,17 +17,6 @@ import java.util.concurrent.LinkedBlockingQueue
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        /*mBinding.btnSave.setOnClickListener {
-            var storeEntity:StoreEntity = StoreEntity(name = mBinding.etName.text.toString().trim())
-
-            Thread{
-                StoreApplication.database.storeDao().addStore(storeEntity)
-            }.start()
-
-            mAdapter.add(storeEntity)
-            mBinding.etName.text.clear()
-        }*/
-
         mBinding.fab.setOnClickListener {
             launchEditFragment()
         }
@@ -36,8 +25,11 @@ import java.util.concurrent.LinkedBlockingQueue
 
     }
 
-     private fun launchEditFragment() {
+     private fun launchEditFragment(args:Bundle?=null) {
          val fragment = EditStoreFragment()
+         if(args!=null){
+             fragment.arguments=args
+         }
          val fragmentManager = supportFragmentManager
          val fragmentTransaction = fragmentManager.beginTransaction()
 
@@ -79,8 +71,13 @@ import java.util.concurrent.LinkedBlockingQueue
 
      }
 
-    override fun onClick(store: StoreEntity) {
-        TODO("Not yet implemented")
+    override fun onClick(storeId:Long) {
+
+        val args = Bundle()
+        args.putLong(getString(R.string.arg_id), storeId)
+
+        launchEditFragment(args)
+
     }
 
      override fun onFavouriteStore(storeEntity: StoreEntity) {
@@ -121,6 +118,6 @@ import java.util.concurrent.LinkedBlockingQueue
      }
 
      override fun updateStore(storeEntity: StoreEntity) {
-         TODO("Not yet implemented")
+         mAdapter.update(storeEntity)
      }
  }

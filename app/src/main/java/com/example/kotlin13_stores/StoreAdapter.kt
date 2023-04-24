@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.kotlin13_stores.databinding.ItemStoreBinding
 
 class StoreAdapter(
@@ -32,17 +34,25 @@ class StoreAdapter(
             setListener(store)
             binding.tvName.text = store.name
             binding.cbFavourite.isChecked = store.isFavourite
+            Glide.with(mContext).load(store.photoUrl).centerCrop().
+            diskCacheStrategy(DiskCacheStrategy.ALL).into(binding.imagePhoto)
 
         }
 
     }
 
     fun add(storeEntity: StoreEntity) {
+
         if(storeEntity.name.isBlank()){
             Toast.makeText(mContext, "La tienda debe tener un nombre", Toast.LENGTH_SHORT).show()
         }else{
-            stores.add(storeEntity)
-            notifyDataSetChanged()
+            if(!stores.contains(storeEntity)){
+                stores.add(storeEntity)
+                notifyItemInserted(stores.size-1)
+            }else{
+                
+            }
+
         }
 
     }
@@ -78,7 +88,7 @@ class StoreAdapter(
 
             with(binding.root) {
                 setOnClickListener {
-                    listener.onClick(storeEntity)
+                    listener.onClick(storeEntity.id)
                 }
 
                 setOnLongClickListener {
