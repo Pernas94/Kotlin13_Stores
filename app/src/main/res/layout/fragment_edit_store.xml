@@ -97,6 +97,7 @@
                 android:layout_weight="1"
                 android:hint="@string/photo_url"
                 app:endIconMode="clear_text"
+                app:helperText="@string/helper_required"
                 app:startIconDrawable="@drawable/ic_link"
                 style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
