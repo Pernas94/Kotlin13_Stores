@@ -1,9 +1,12 @@
  package com.example.kotlin13_stores
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.kotlin13_stores.databinding.ActivityMainBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.LinkedBlockingQueue
 
  class MainActivity : AppCompatActivity(), OnClickListener, MainAux {
@@ -88,22 +91,43 @@ import java.util.concurrent.LinkedBlockingQueue
              queue.add(storeEntity)
          }.start()
 
-         mAdapter.update(queue.take())
+         updateStore(queue.take())
 
      }
 
 
      override fun onDeleteStore(storeEntity: StoreEntity) {
 
-         val queue = LinkedBlockingQueue<StoreEntity>()
-         Thread{
-             StoreApplication.database.storeDao().deleteStore(storeEntity)
-             queue.add(storeEntity)
-         }.start()
+         val items = arrayOf("Eliminar", "Llamar", "Ir al sitio web")
+         MaterialAlertDialogBuilder(this)
+             .setTitle(R.string.dialog_options_title)
+             .setItems(items) { _, i ->
+                 when(i){
+                     0-> confirmDelete(storeEntity)
+                     1-> Toast.makeText(this, "Llamar...", Toast.LENGTH_SHORT).show()
+                     2-> Toast.makeText(this, "Sitio web...", Toast.LENGTH_SHORT).show()
+                 }
+             }
+             .show()
 
-         mAdapter.delete(queue.take())
      }
 
+
+     private fun confirmDelete(storeEntity: StoreEntity){
+         MaterialAlertDialogBuilder(this)
+             .setTitle(R.string.dialog_delete_title)
+             .setPositiveButton(R.string.dialog_delete_confirm) { _, _ ->
+                 val queue = LinkedBlockingQueue<StoreEntity>()
+                 Thread {
+                     StoreApplication.database.storeDao().deleteStore(storeEntity)
+                     queue.add(storeEntity)
+                 }.start()
+
+                 mAdapter.delete(queue.take())
+             }
+             .setNegativeButton(R.string.dialog_delete_cancel, null)
+             .show()
+     }
 
      /**
       * MAIN AUX

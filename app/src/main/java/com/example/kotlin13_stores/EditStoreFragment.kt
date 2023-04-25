@@ -51,17 +51,39 @@ class EditStoreFragment : Fragment() {
             mStoreEntity = StoreEntity(name = "", phone = "", photoUrl = "")
         }
 
+
+        setUpActionBar()
+        setupTextFields()
+
+    }
+
+    private fun setUpActionBar() {
         mActivity = activity as MainActivity?
         mActivity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        mActivity?.supportActionBar?.title = getString(R.string.edit_store_title_add)
+        mActivity?.supportActionBar?.title = if(mIsEditMode) getString(R.string.edit_store_title_update)
+        else getString(R.string.edit_store_title_add)
         setHasOptionsMenu(true)
+    }
 
-        mBinding.etPhotoUrl.addTextChangedListener {
-            Glide.with(this).
-                //load(mBinding.etPhotoUrl.text.toString()).
-            load("https://enmedellin.com.co/sites/enmedellin.com.co/files/photos/convenience-store_6677.png")
-                .diskCacheStrategy(DiskCacheStrategy.ALL).centerCrop().into(mBinding.imgPhoto)
+    private fun setupTextFields() {
+
+        with(mBinding){
+            etName.addTextChangedListener { validateFields(tilName) }
+            etPhone.addTextChangedListener { validateFields(tilPhone) }
+            etPhotoUrl.addTextChangedListener {
+                validateFields(tilPhotoUrl)
+                loadImage(it.toString().trim())
+            }
         }
+
+    }
+
+    private fun loadImage(url:String){
+        Glide.with(this).
+        load("https://enmedellin.com.co/sites/enmedellin.com.co/files/photos/convenience-store_6677.png")
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .centerCrop()
+            .into(mBinding.imgPhoto)
     }
 
     private fun getStore(id: Long) {
@@ -160,7 +182,7 @@ class EditStoreFragment : Fragment() {
             if(editText.editText?.text.toString().trim().isEmpty()){
                 editText.error = getString(R.string.helper_required)
                 isValid = false
-            }
+            }else editText.error = null
         }
 
 
