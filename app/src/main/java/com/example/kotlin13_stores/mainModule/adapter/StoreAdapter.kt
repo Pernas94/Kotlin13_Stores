@@ -1,14 +1,16 @@
-package com.example.kotlin13_stores
+package com.example.kotlin13_stores.mainModule.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.kotlin13_stores.R
+import com.example.kotlin13_stores.common.entities.StoreEntity
 import com.example.kotlin13_stores.databinding.ItemStoreBinding
+import com.example.kotlin13_stores.mainModule.OnClickListener
 
 class StoreAdapter(
     private var stores: MutableList<StoreEntity>,
@@ -50,9 +52,9 @@ class StoreAdapter(
 
     }
 
-    fun setStores(stores: MutableList<StoreEntity>) {
+    fun setStores(stores: List<StoreEntity>) {
 
-        this.stores = stores
+        this.stores = stores as MutableList<StoreEntity>
         notifyDataSetChanged()
     }
 

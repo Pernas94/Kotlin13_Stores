@@ -1,10 +1,11 @@
-package com.example.kotlin13_stores
+package com.example.kotlin13_stores.common.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.example.kotlin13_stores.common.entities.StoreEntity
 
 @Dao
 interface StoreDao {
@@ -12,14 +13,14 @@ interface StoreDao {
     fun getAllStores():MutableList<StoreEntity>
 
     @Query("SELECT * FROM StoreEntity WHERE id = :id")
-    fun getStoreById(id:Long):StoreEntity
+    fun getStoreById(id:Long): StoreEntity
 
     @Insert
-    fun addStore(storeEntity:StoreEntity): Long
+    fun addStore(storeEntity: StoreEntity): Long
 
     @Update
-    fun updateStore(storeEntity:StoreEntity)
+    fun updateStore(storeEntity: StoreEntity)
 
     @Delete
-    fun deleteStore(storeEntity:StoreEntity)
+    fun deleteStore(storeEntity: StoreEntity)
 }

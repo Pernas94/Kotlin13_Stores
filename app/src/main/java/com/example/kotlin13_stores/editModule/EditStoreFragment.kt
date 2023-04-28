@@ -1,4 +1,4 @@
-package com.example.kotlin13_stores
+package com.example.kotlin13_stores.editModule
 
 import android.content.Context
 import android.os.Bundle
@@ -16,7 +16,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.kotlin13_stores.R
+import com.example.kotlin13_stores.StoreApplication
+import com.example.kotlin13_stores.common.entities.StoreEntity
 import com.example.kotlin13_stores.databinding.FragmentEditStoreBinding
+import com.example.kotlin13_stores.mainModule.MainActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import java.util.concurrent.LinkedBlockingQueue
@@ -128,16 +132,14 @@ class EditStoreFragment : Fragment() {
                 MaterialAlertDialogBuilder(requireActivity())
                     .setTitle(R.string.dialog_exit_title)
                     .setMessage(R.string.dialog_exit_mssg)
-                    .setPositiveButton(R.string.dialog_exit_ok){_,_->
+                    .setPositiveButton(R.string.dialog_exit_ok){ _, _->
                         if(isEnabled){
-                            requireActivity().onBackPressedDispatcher.onBackPressed()
                             isEnabled =false
+                            requireActivity().onBackPressedDispatcher.onBackPressed()
                         }
                     }
                     .setNegativeButton(R.string.dialog_delete_cancel, null)
                     .show()
-
-
             }
         })
     }
@@ -187,12 +189,13 @@ class EditStoreFragment : Fragment() {
 
                         if(mIsEditMode){
                             mActivity?.updateStore(this)
-                            Toast.makeText(mActivity, R.string.edit_store_message_update_success, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mActivity,
+                                R.string.edit_store_message_update_success, Toast.LENGTH_SHORT).show()
 
                         }else{
                             mActivity?.addStore(this)
                             Toast.makeText(mActivity, R.string.edit_store_message_success, Toast.LENGTH_SHORT).show()
-                            requireActivity().onBackPressedDispatcher?.onBackPressed()
+
                         }
                     }
                 }

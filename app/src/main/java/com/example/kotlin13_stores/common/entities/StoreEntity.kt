@@ -1,4 +1,4 @@
-package com.example.kotlin13_stores
+package com.example.kotlin13_stores.common.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

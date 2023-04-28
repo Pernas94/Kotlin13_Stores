@@ -36,6 +36,7 @@ android {
         //jvmTarget = '1.8'
         jvmTarget = '17'
     }
+
     buildFeatures{
         viewBinding = true
     }
@@ -46,8 +47,14 @@ java {
 }*/
 
 def room_version = "2.5.1"
-
+def lifecycle_version = "2.5.1"
 dependencies {
+
+    //MVVM
+
+
+    // ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

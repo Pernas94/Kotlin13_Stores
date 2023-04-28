@@ -1,4 +1,6 @@
-package com.example.kotlin13_stores
+package com.example.kotlin13_stores.common.utils
+
+import com.example.kotlin13_stores.common.entities.StoreEntity
 
 interface MainAux {
     fun hideFab(isVisible:Boolean=false)

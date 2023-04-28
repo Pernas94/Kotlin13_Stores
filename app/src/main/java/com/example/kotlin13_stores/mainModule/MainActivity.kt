@@ -1,13 +1,20 @@
- package com.example.kotlin13_stores
+ package com.example.kotlin13_stores.mainModule
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.kotlin13_stores.editModule.EditStoreFragment
+import com.example.kotlin13_stores.common.utils.MainAux
+import com.example.kotlin13_stores.R
+import com.example.kotlin13_stores.StoreApplication
+import com.example.kotlin13_stores.common.entities.StoreEntity
 import com.example.kotlin13_stores.databinding.ActivityMainBinding
+import com.example.kotlin13_stores.mainModule.adapter.StoreAdapter
+import com.example.kotlin13_stores.mainModule.viewModel.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -15,7 +22,11 @@ import java.util.concurrent.LinkedBlockingQueue
 
     private lateinit var mBinding:ActivityMainBinding
      private lateinit var mAdapter: StoreAdapter
-     private lateinit var gridLayout : GridLayoutManager
+     private lateinit var mGridLayout : GridLayoutManager
+     //MVVM
+
+     private lateinit var mMainViewModel: MainViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +37,16 @@ import java.util.concurrent.LinkedBlockingQueue
             launchEditFragment()
         }
         initRecycler()
-
-
+        setupViewModel()
     }
+
+     private fun setupViewModel() {
+         mMainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
+         mMainViewModel.getStores().observe(this) { stores ->
+             mAdapter.setStores(stores)
+         }
+
+     }
 
      private fun launchEditFragment(args:Bundle?=null) {
          val fragment = EditStoreFragment()
@@ -48,7 +66,7 @@ import java.util.concurrent.LinkedBlockingQueue
      }
 
 
-     private fun getStores(){
+     /*private fun getStores(){
          //variable especial que permite crea una cola de actividades de un tipo concreto.
          //Así podemos hacer que al entrar un valor a esa cola, se ejecute una acción en el MainThread de forma asíncrona
          val queue = LinkedBlockingQueue<MutableList<StoreEntity>>()
@@ -62,15 +80,16 @@ import java.util.concurrent.LinkedBlockingQueue
          //Con take() esperamos a que haya un cambio en la cola para realizar la acción.
          mAdapter.setStores(queue.take())
 
-     }
+     }*/
+
      private fun initRecycler(){
          mAdapter = StoreAdapter(mutableListOf(), this)
-         gridLayout = GridLayoutManager(this, resources.getInteger(R.integer.main_columns))
-         getStores()
+         mGridLayout = GridLayoutManager(this, resources.getInteger(R.integer.main_columns))
+         //getStores()
 
          mBinding.recycler.apply {
             setHasFixedSize(true)
-             layoutManager = gridLayout
+             layoutManager = mGridLayout
              adapter = mAdapter
          }
 
